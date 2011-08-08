@@ -16,6 +16,7 @@
  */
 
 // Offering a Custom Alias suport - More info: http://docs.jquery.com/Plugins/Authoring#Custom_Alias
+var lightbox_path = lightbox_path || '';
 (function($) {
 	/**
 	 * $ is an alias to jQuery object
