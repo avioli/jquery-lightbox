@@ -28,6 +28,10 @@
 	text-align: center;
 	line-height: 0;
 }
+#lightbox-image {
+	width: 100%;
+	height: auto;
+}
 #jquery-lightbox a img { border: none; }
 #lightbox-container-image-box {
 	position: relative;
