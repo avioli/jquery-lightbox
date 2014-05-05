@@ -1,74 +1,235 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>jQuery lightBox plugin</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jQuery lightBox plugin</title>
 
-    <!-- Arquivos utilizados pelo jQuery lightBox plugin -->
-    <script type="text/javascript" src="js/jquery.1.2.3.js"></script>
-    <script type="text/javascript" src="js/jquery.lightbox.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/jquery.lightbox.css" media="screen" />
-    <!-- / fim dos arquivos utilizados pelo jQuery lightBox plugin -->
-    
-   	<style type="text/css">
-	/* jQuery lightBox plugin - Gallery style */
-	#gallery {
-		background-color: #444;
-		padding: 10px;
-		width: 520px;
-	}
-	#gallery ul { list-style: none; }
-	#gallery ul li { display: inline; }
-	#gallery ul img {
-		border: 5px solid #3e3e3e;
-		border-width: 5px 5px 20px;
-	}
-	#gallery ul a:hover img {
-		border: 5px solid #fff;
-		border-width: 5px 5px 20px;
-		color: #fff;
-	}
-	#gallery ul a:hover { color: #fff; }
+	<link rel="stylesheet" type="text/css" href="../style-projects-jquery.css" />
+
+	<!-- Add jQuery lightBox plugin stylesheet in the <head>. This styles the lightbox itself, not your gallery thumbnails. -->
+	<link rel="stylesheet" type="text/css" href="css/jquery.lightbox.css" media="screen" />
+
+	<style type="text/css">
+		/* jQuery lightBox plugin - Gallery thumbnails styles */
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		#lightbox-container-image-data-box,
+		.gallery img {
+			/* Revert to default box-sizing for the data-box and the images */
+			-webkit-box-sizing: content-box;
+			-moz-box-sizing: content-box;
+			box-sizing: content-box;
+		}
+		.gallery {
+			background-color: #111;
+			padding: 30px;
+			width: 100%;
+		}
+		.gallery ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		.gallery ul li { display: inline; }
+		.gallery ul img {
+			border-style: solid;
+			border-color: #444;
+			border-width: 5px 5px 20px;
+		}
+		.gallery ul a {
+			text-decoration: none;
+		}
+		.gallery ul a:hover img {
+			border-color: #fff;
+			color: #fff;
+		}
+		.gallery ul a:hover { color: #fff; }
+		.columns:before,
+		.columns:after {
+			content: " ";
+			display: table;
+		}
+		.columns:after {
+			clear: both;
+		}
+		.columns {
+			*zoom: 1;
+			margin-left: -15px;
+			margin-right: -15px;
+		}
+		.column {
+			width: 50%;
+			float: left;
+			position: relative;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
 	</style>
 </head>
 
 <body>
 
 <h2 id="example">Example</h2>
-<p>Click in the image and see the <strong>jQuery lightBox plugin</strong> in action.</p>
-<div id="gallery">
-    <ul>
-        <li>
-            <a href="photos/image1.jpg" title="Utilize a flexibilidade dos seletores da jQuery e crie um grupo de imagens como desejar. $('#gallery').lightBox();">
-                <img src="photos/thumb_image1.jpg" width="72" height="72" alt="" />
-            </a>
-        </li>
-        <li>
-            <a href="photos/image2.jpg" title="Utilize a flexibilidade dos seletores da jQuery e crie um grupo de imagens como desejar. $('#gallery a').lightBox();">
-                <img src="photos/thumb_image2.jpg" width="72" height="72" alt="" />
-            </a>
-        </li>
-        <li>
-            <a href="photos/image3.jpg" title="Utilize a flexibilidade dos seletores da jQuery e crie um grupo de imagens como desejar. $('#gallery a').lightBox();">
-                <img src="photos/thumb_image3.jpg" width="72" height="72" alt="" />
-            </a>
-        </li>
-        <li>
-            <a href="photos/image4.jpg" title="Utilize a flexibilidade dos seletores da jQuery e crie um grupo de imagens como desejar. $('#gallery a').lightBox();">
-                <img src="photos/thumb_image4.jpg" width="72" height="72" alt="" />
-            </a>
-        </li>
-        <li>
-            <a href="photos/image5.jpg" title="Utilize a flexibilidade dos seletores da jQuery e crie um grupo de imagens como desejar. $('#gallery a').lightBox();">
-                <img src="photos/thumb_image5.jpg" width="72" height="72" alt="" />
-            </a>
-        </li>
-    </ul>
+<p>Click on an image, below to see the <strong>jQuery lightBox plugin</strong> in action.</p>
+
+<div class="columns">
+<div class="column">
+<p>Here are three galleries that are showing a lightbox, setup with a single javascript call. The first two galleries are "self-contained", not showing the images in the other one, by using <code>rel="lightbox[NAME]"</code>, where NAME is a unique alphanumeric value for each gallery, set on each <code>anchor</code> element.</p>
+<p><strong>Note:</strong> If you've got, even a single image, wrapped in an <code>anchor</code> element with NO <code>rel</code> tag, but there are, within the same page, galleries WITH a <code>rel</code> tag, then that single image will expose all images, provided by the query, within a single lightbox. See <a href="#gallery3">Gallery 3</a> for an example.</p>
+</div><!-- /column -->
+<div class="column">
+<p>Here are the same three galleries as on the left hand side, but these are initialised with three different javascript calls to the lightbox plugin, thus removing the problematic case (and actual need) of the <code>rel</code> tag.</p>
+<p><strong>Note:</strong> The downside to this approach is the several javascript calls to query elements and setup the lightboxes.</p>
+</div><!-- /column -->
+</div><!-- /columns -->
+
+<div class="columns">
+<div class="column galleries-set1">
+
+<h3>Gallery 1</h3>
+<div id="gallery1" class="gallery">
+	<ul>
+		<li>
+			<a href="photos/image1.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();" rel="lightbox[gallery1]">
+				<img src="photos/thumb_image1.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="photos/image2.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();" rel="lightbox[gallery1]">
+				<img src="photos/thumb_image2.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="photos/image3.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();" rel="lightbox[gallery1]">
+				<img src="photos/thumb_image3.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+	</ul>
+</div><!-- /gallery1 -->
+
+<h3>Gallery 2</h3>
+<div id="gallery2" class="gallery">
+	<ul>
+		<li>
+			<a href="photos/image4.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();" rel="lightbox[gallery2]">
+				<img src="photos/thumb_image4.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="photos/image5.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();" rel="lightbox[gallery2]">
+				<img src="photos/thumb_image5.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+	</ul>
+</div><!-- /gallery2 -->
+
+<h3>Gallery 3</h3>
+<div id="gallery3" class="gallery">
+	<ul>
+		<li>
+			<a href="photos/image1.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();">
+				<img src="photos/thumb_image1.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+	</ul>
+</div><!-- /gallery3 -->
+
+<div class="code">
+<pre style='color:#000000;background:#f1f0f0;'>
+
+$<span style='color:#806030; '>(</span><span style='color:#e60000; '>'.galleries-set1 .gallery a'</span><span style='color:#806030; '>)</span><span style='color:#806030; '>.</span>lightBox<span style='color:#806030; '>(</span><span style='color:#806030; '>)</span><span style='color:#806030; '>;</span>
+
+</pre>
 </div>
-<!-- Ativando o jQuery lightBox plugin -->
+
+</div><!-- /column -->
+
+<div class="column">
+
+<h3>Gallery 4</h3>
+<div id="gallery4" class="gallery">
+	<ul>
+		<li>
+			<a href="photos/image3.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();">
+				<img src="photos/thumb_image3.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="photos/image2.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();">
+				<img src="photos/thumb_image2.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="photos/image1.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();">
+				<img src="photos/thumb_image1.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+	</ul>
+</div><!-- /gallery4 -->
+
+<h3>Gallery 5</h3>
+<div id="gallery5" class="gallery">
+	<ul>
+		<li>
+			<a href="photos/image5.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();">
+				<img src="photos/thumb_image5.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+		<li>
+			<a href="photos/image4.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();">
+				<img src="photos/thumb_image4.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+	</ul>
+</div><!-- /gallery5 -->
+
+<h3>Gallery 6</h3>
+<div id="gallery6" class="gallery">
+	<ul>
+		<li>
+			<a href="photos/image1.jpg" title="Use the flexibility of jQuery and create a group of images as desired. $('#gallery').lightBox();">
+				<img src="photos/thumb_image1.jpg" width="72" height="72" alt="" />
+			</a>
+		</li>
+	</ul>
+</div><!-- /gallery6 -->
+
+<div class="code">
+<pre style='color:#000000;background:#f1f0f0;'>
+
+$<span style='color:#806030; '>(</span><span style='color:#e60000; '>'#gallery4 a'</span><span style='color:#806030; '>)</span><span style='color:#806030; '>.</span>lightBox<span style='color:#806030; '>(</span><span style='color:#806030; '>)</span><span style='color:#806030; '>;</span>
+$<span style='color:#806030; '>(</span><span style='color:#e60000; '>'#gallery5 a'</span><span style='color:#806030; '>)</span><span style='color:#806030; '>.</span>lightBox<span style='color:#806030; '>(</span><span style='color:#806030; '>)</span><span style='color:#806030; '>;</span>
+$<span style='color:#806030; '>(</span><span style='color:#e60000; '>'#gallery6 a'</span><span style='color:#806030; '>)</span><span style='color:#806030; '>.</span>lightBox<span style='color:#806030; '>(</span><span style='color:#806030; '>)</span><span style='color:#806030; '>;</span>
+
+</pre>
+</div>
+
+</div><!-- /column -->
+</div><!-- /columns -->
+
+<h3>Changelog:</h3>
+<p>2014.05 -- Add example how to use multiple groups on a single page, simultaneously.</p>
+<p>2011.08 -- Add rel="lightbox[groupName]" tag to group images; Add shrinkToFit setting to shrink images to fit the viewport.</p>
+
+<script type="text/javascript" src="js/jquery.1.2.3.js"></script>
+<!-- Add jQuery lightBox plugin script to the end of the DOM -->
+<!-- Make sure there is a jQuery framework, loaded, before the plugin script loads -->
+<script type="text/javascript" src="js/jquery.lightbox.min.js"></script>
+<!-- Activate the jQuery lightBox plugin -->
 <script type="text/javascript">
 $(function() {
-    $('#gallery a').lightBox();
+	// When DOM is ready, attach the lightBox to the proper elements
+
+	// Left column
+	$('.galleries-set1 .gallery a').lightBox();
+
+	// Right column
+	$('#gallery4 a').lightBox();
+	$('#gallery5 a').lightBox();
+	$('#gallery6 a').lightBox();
 });
 </script>
 </body>
