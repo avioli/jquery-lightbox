@@ -1,5 +1,5 @@
 /**
- * jQuery lightBox plugin
+ * @preserve jQuery lightBox plugin
  * This jQuery plugin was inspired and based on Lightbox 2 by Lokesh Dhakar (http://www.huddletogether.com/projects/lightbox2/)
  * and adapted to me for use like a plugin from jQuery.
  * @name jquery-lightbox-0.5.js
@@ -13,6 +13,16 @@
  *
  * @updates by Ivaylo Stamatov aka avioli @ FULLER http://fuller.com.au/
  * @date 2011-08-04
+ */
+
+/**
+ * Informations for developers:
+ *
+ * The minified file can be generated with Google Closure Compiler (https://github.com/google/closure-compiler)
+ * The "preserve" keyword at the top enables to keep the content of the header in the minified file
+ * You can compile the file by running the following command in the javascript directory
+ * java -jar /path/to/compiler --js_output_file=jquery.lightbox.min.js jquery.lightbox.js
+ *
  */
 
 // Offering a Custom Alias suport - More info: http://docs.jquery.com/Plugins/Authoring#Custom_Alias
@@ -46,7 +56,7 @@ var lightbox_path = lightbox_path || '';
 			keyToClose:				'c',		// (string) (c = close) Letter to close the jQuery lightBox interface. Beyond this letter, the letter X and the SCAPE key is used to.
 			keyToPrev:				'p',		// (string) (p = previous) Letter to show the previous image
 			keyToNext:				'n',		// (string) (n = next) Letter to show the next image.
-			// Don´t alter these variables in any way
+			// DonÂ´t alter these variables in any way
 			imageArray:				[],
 			activeImage:			0,
 			captionPosition:        ''
@@ -97,7 +107,7 @@ var lightbox_path = lightbox_path || '';
 			/* F */
 			
 			
-			// We have an image set? Or just an image? Let´s see it.
+			// We have an image set? Or just an image? LetÂ´s see it.
 			if ( jQueryMatchedObj.length == 1 ) {
 				if( settings.captionPosition == 'gallery' ) var position = jQuery(objClicked).parent().next().html();
 				else var position = objClicked.getAttribute('title');
@@ -176,22 +186,13 @@ var lightbox_path = lightbox_path || '';
 		function _set_interface() {
 			// Apply the HTML markup into body tag
 			$('body').append('<div id="jquery-overlay"></div><div id="jquery-lightbox"><div id="lightbox-container-image-box"><div id="lightbox-container-image"><img id="lightbox-image"><div style="" id="lightbox-nav"><a href="#" id="lightbox-nav-btnPrev"></a><a href="#" id="lightbox-nav-btnNext"></a></div><div id="lightbox-loading"><a href="#" id="lightbox-loading-link"><img src="' + settings.imageLoading + '"></a></div></div></div><div id="lightbox-container-image-data-box"><div id="lightbox-container-image-data"><div id="lightbox-image-details"><span id="lightbox-image-details-caption"></span><span id="lightbox-image-details-currentNumber"></span></div><div id="lightbox-secNav"><a href="#" id="lightbox-secNav-btnClose"><img src="' + settings.imageBtnClose + '"></a></div></div></div></div>');	
-			// Get page sizes
-			var arrPageSizes = ___getPageSize();
 			// Style overlay and show it
 			$('#jquery-overlay').css({
 				backgroundColor:	settings.overlayBgColor,
-				opacity:			settings.overlayOpacity,
-				width:				arrPageSizes[0],
-				height:				arrPageSizes[1]
+				opacity:			settings.overlayOpacity
 			}).fadeIn();
-			// Get page scroll
-			var arrPageScroll = ___getPageScroll();
-			// Calculate top and left offset for the jquery-lightbox div object and show it
-			$('#jquery-lightbox').css({
-				top:	arrPageScroll[1] + (arrPageSizes[3] / 10),
-				left:	arrPageScroll[0]
-			}).show();
+			// Set modal dimensions
+			_resize_jquery_lightbox();
 			// Assigning click events in elements to close overlay
 			$('#jquery-overlay,#jquery-lightbox').click(function() {
 				_finish();									
@@ -203,24 +204,11 @@ var lightbox_path = lightbox_path || '';
 			});
 			// If window was resized, calculate the new overlay dimensions
 			$(window).resize(function() {
-				// Get page sizes
-				var arrPageSizes = ___getPageSize();
-				// Style overlay and show it
-				$('#jquery-overlay').css({
-					width:		arrPageSizes[0],
-					height:		arrPageSizes[1]
-				});
-				// Get page scroll
-				var arrPageScroll = ___getPageScroll();
-				// Calculate top and left offset for the jquery-lightbox div object and show it
-				$('#jquery-lightbox').css({
-					top:	arrPageScroll[1] + (arrPageSizes[3] / 10),
-					left:	arrPageScroll[0]
-				});
+				_resize_jquery_lightbox();
 			});
 		}
 		/**
-		 * Prepares image exibition; doing a image´s preloader to calculate it´s size
+		 * Prepares image exibition; doing a imageÂ´s preloader to calculate itÂ´s size
 		 *
 		 */
 		function _set_image_to_view() { // show the loading
@@ -244,10 +232,31 @@ var lightbox_path = lightbox_path || '';
 			objImagePreloader.src = settings.imageArray[settings.activeImage][0];
 		};
 		/**
+		 * Resize the lightbox depending on the current screen resolution
+		 *
+		 */
+		function _resize_jquery_lightbox() {
+			// Get page sizes
+			var arrPageSizes = ___getPageSize();
+			// Style overlay and show it
+			$('#jquery-overlay').css({
+				width:		arrPageSizes[0],
+				height:		arrPageSizes[1]
+			});
+			// Get page scroll
+			var arrPageScroll = ___getPageScroll();
+			// Calculate top and left offset for the jquery-lightbox div object and show it
+			$('#jquery-lightbox').css({
+				// If the shrinkToFit feature is enabled, the shrinkPadding property is used. If not, top is 10th of the page height
+				top:	arrPageScroll[1] + (settings.shrinkToFit ? settings.shrinkPadding : arrPageSizes[3] / 10),
+				left:	arrPageScroll[0]
+			});
+		};
+		/**
 		 * Perfom an effect in the image container resizing it
 		 *
-		 * @param integer intImageWidth The image´s width that will be showed
-		 * @param integer intImageHeight The image´s height that will be showed
+		 * @param integer intImageWidth The imageÂ´s width that will be showed
+		 * @param integer intImageHeight The imageÂ´s height that will be showed
 		 */
 		function _resize_container_image_box(intImageWidth,intImageHeight) {
 			// Get current width and height
@@ -258,17 +267,16 @@ var lightbox_path = lightbox_path || '';
 			/* FULLER */
 			if ( settings.shrinkToFit ) {
 				var arrPageSizes = ___getPageSize();
-				var arrPageScroll = ___getPageScroll();
-				var scrollTop = arrPageScroll[1] + ( arrPageSizes[3] / 10 );
-				var scrollLeft = arrPageScroll[0];
-			
+				
+				// The 0.9 percentage ensures that controls under the modal are (mostly) visible even with a very small shrinkPadding
+				// shrinkPadding is doubled to give same padding all around the modal
 				var imageRatio = intImageWidth / intImageHeight;
-				if ( intImageHeight > arrPageSizes[1] - scrollTop * 2 - settings.shrinkPadding ) {
-					intImageHeight = arrPageSizes[1] - scrollTop * 2 - settings.shrinkPadding;
+				if ( intImageHeight > arrPageSizes[3] * 0.9 - settings.shrinkPadding * 2 ) {
+					intImageHeight = arrPageSizes[3] * 0.9 - settings.shrinkPadding * 2;
 					intImageWidth = intImageHeight * imageRatio;
 				}
-				if ( intImageWidth > arrPageSizes[0] - settings.shrinkPadding ) {
-					intImageWidth = arrPageSizes[0] - settings.shrinkPadding;
+				if ( intImageWidth > arrPageSizes[0] - settings.shrinkPadding * 2 ) {
+					intImageWidth = arrPageSizes[0] - settings.shrinkPadding * 2;
 					intImageHeight = intImageWidth / imageRatio;
 				}
 			}
@@ -276,8 +284,8 @@ var lightbox_path = lightbox_path || '';
 			
 			
 			// Get the width and height of the selected image plus the padding
-			var intWidth = (intImageWidth + (settings.containerBorderSize * 2)); // Plus the image´s width and the left and right padding value
-			var intHeight = (intImageHeight + (settings.containerBorderSize * 2)); // Plus the image´s height and the left and right padding value
+			var intWidth = (intImageWidth + (settings.containerBorderSize * 2)); // Plus the imageÂ´s width and the left and right padding value
+			var intHeight = (intImageHeight + (settings.containerBorderSize * 2)); // Plus the imageÂ´s height and the left and right padding value
 			// Diferences
 			var intDiffW = intCurrentWidth - intWidth;
 			var intDiffH = intCurrentHeight - intHeight;
@@ -327,7 +335,7 @@ var lightbox_path = lightbox_path || '';
 		function _set_navigation() {
 			$('#lightbox-nav').show();
 
-			// Instead to define this configuration in CSS file, we define here. And it´s need to IE. Just.
+			// Instead to define this configuration in CSS file, we define here. And itÂ´s need to IE. Just.
 			$('#lightbox-nav-btnPrev,#lightbox-nav-btnNext').css({ 'background' : 'transparent url(' + settings.imageBlank + ') no-repeat' });
 			
 			// Show the prev button, if not the first image in set
@@ -418,7 +426,7 @@ var lightbox_path = lightbox_path || '';
 			}
 			// Verify the key to show the previous image
 			if ( ( key == settings.keyToPrev ) || ( keycode == 37 ) ) {
-				// If we´re not showing the first image, call the previous
+				// If weÂ´re not showing the first image, call the previous
 				if ( settings.activeImage != 0 ) {
 					settings.activeImage = settings.activeImage - 1;
 					_set_image_to_view();
@@ -427,7 +435,7 @@ var lightbox_path = lightbox_path || '';
 			}
 			// Verify the key to show the next image
 			if ( ( key == settings.keyToNext ) || ( keycode == 39 ) ) {
-				// If we´re not showing the last image, call the next
+				// If weÂ´re not showing the last image, call the next
 				if ( settings.activeImage != ( settings.imageArray.length - 1 ) ) {
 					settings.activeImage = settings.activeImage + 1;
 					_set_image_to_view();
