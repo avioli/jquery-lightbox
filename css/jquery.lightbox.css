@@ -12,7 +12,7 @@
  * @example Visit http://leandrovieira.com/projects/jquery/lightbox/ for more informations about this jQuery plugin
  */
 #jquery-overlay {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	z-index: 90;
